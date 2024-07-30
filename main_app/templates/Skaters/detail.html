@@ -1,0 +1,131 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/skaters/skater-detail.css' %}" />
+{% endblock %} 
+{% block content %}
+ <section class="skater-container">
+  <div class="skater-img">
+    <img src="{% static 'images/Skate Tricks/shrek.png' %}" alt="Shrek stanced up" />
+  </div>
+  <div class="skater-details">
+    <h1>{{ skater.name }}</h1>
+    {% if skater.age > 0 %}
+      <h2>A {{ skater.age }} year old {{ skater.breed }}</h2>
+    {% else %}
+      <h2>A {{ skater.breed }} shredder.</h2>
+    {% endif %}
+    <p>{{ skater.description }}</p>
+    <div class="skater-actions">
+        <a href="{% url 'skater-update' skater.id %}" class="btn warn">Edit</a>
+        <a href="{% url 'skater-delete' skater.id %}" class="btn danger">Delete</a>
+      </div>
+  </div>
+ </section>
+ <div class="behaviors-trick-container">
+    <section class="behaviors">
+      <div class="subsection-title">
+        <h2>Behaviors</h2>
+        <img
+          src="{% static 'images/Skate Tricks/PngItem_98504.png' %}"
+          alt="Lil cutout guy skating"
+        />
+        <img src="{% static 'images/Skate Tricks/PngItem_3439618.png' %}" alt="A cutout skating" />
+        <img
+          src="{% static 'images/Skate Tricks/PngItem_98871.png' %}"
+          alt="Lil cutout guy skating"
+        />
+      </div>
+      <h3>Add a Behavior</h3>
+         <form 
+            action="{% url 'add-behavior' skater.id %}"
+            method="post" 
+            class="subsection-content" 
+            autocomplete="off"
+        >
+           {% csrf_token %} 
+           {{ behavior_form.as_p }}
+           <button type="submit" class="btn submit">Add Behavior</button>
+         </form>
+         <h3>Past Behaviors</h3>
+         {% if skater.behavior_set.all.count %}
+           <table>
+             <thead>
+               <tr>
+                 <th>Date</th>
+                 <th>Behavior</th>
+               </tr>
+             </thead>
+             <tbody>
+               {% for behavior in skater.behavior_set.all %}
+               <tr>
+                 <td>{{behavior.date}}</td>
+                 <td>{{behavior.get_behavior_display}}</td>
+               </tr>
+               {% endfor %}
+             </tbody>
+           </table>
+         {% else %}
+           <div class="subsection-content">
+             <p>⚠️ {{skater.name}} has not been acting up!</p>
+           </div>
+         {% endif %}
+        </tbody>
+      </table>
+    </section>
+    <section class="behaviors">
+        <!-- This is a long section -->
+      </section>
+      
+      <section class="tricks">
+        <div class="subsection-title">
+          <h2>Tricks</h2>
+          <img src="{% static 'images/Skate Tricks/PngItem_98504.png' %}" alt="A coutout of a guy doing a trick" />
+          <img src="{% static 'images/Skate Tricks/PngItem_98871.png' %}" alt="A coutout of a guy doing a trick" />
+          <img src="{% static 'images/Skate Tricks/PngItem_3439618.png' %}" alt="A coutout of a guy doing a trick" />
+        </div>
+        <h3>{{ skater.name }}'s Tricks</h3>
+        <div class="subsection-content">
+          {% if skater.tricks.count %} 
+            {% for trick in skater.tricks.all %}
+              <div class="trick-container">
+                <div class="color-block" style="background-color: {{ trick.type }}"></div>
+                <a href="{% url 'trick-detail' trick.id %}">
+                  <p>A {{ trick.type }} {{ trick.name }}</p>
+                </a>
+                <form action="{% url 'remove-trick' skater.id trick.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remove Trick</button>
+                  </form>
+                  
+              </div>
+            {% endfor %} 
+          {% else %}
+            <p class="no-tricks">{{skater.name}} doesn't have any trick! Whack!</p>
+          {% endif %}
+        </div>
+
+        <h3>Available Tricks</h3>
+          <div class="subsection-content">
+           {% if tricks.count %} 
+            {% for trick in tricks.all %}
+             <div class="trick-container">
+              <div class="color-block" style="background-color: {{ trick.type }}"></div>
+              <a href="{% url 'trick-detail' trick.id %}">
+               <p>A {{ trick.type }} {{ trick.name }}</p>
+              </a>
+              <form action="{% url 'associate-trick' skater.id trick.id %}" method="post">
+                {% csrf_token %}
+               <button type="submit" class="btn submit">Give trick</button>
+              </form>
+          </div>
+        {% endfor %} 
+       {% else %}
+          <p class="all-tricks">{{skater.name}} already has all the available trick 🥳 Yeah Boiiii</p>
+       {% endif %}
+</div>
+
+      </section>
+  </div>
+  
+{% endblock %}

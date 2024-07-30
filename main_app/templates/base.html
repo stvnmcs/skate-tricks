@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/Skate Tricks/eye logo.jpg' %}"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <title>Cat Collector</title>
+    {% block head %} 
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="header-logo-container">
+        <a href="/">
+          <img src="{% static 'images/Skate Tricks/Skate-Tricks-7-27-2024.png' %}" alt="Skate Tricks Logo" />
+        </a>
+      </div>
+      <nav>
+        <ul>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'skater-index' %}">All Skaters</a></li>
+          <li><a href="{% url 'trick-index' %}">All Tricks</a></li>
+          <li><a href="{% url 'skater-create' %}">Add a Skater</a></li>
+          <li><a href="{% url 'trick-create' %}">Add a Trick</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li>
+            <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+              {% csrf_token %}
+              <button type="submit">Log out</button>
+            </form>
+          </li>
+          {% else %}
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'home' %}">Login</a></li>
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+    {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <main>
+     {% block content %} 
+     {% endblock %}
+     </main>
+  </body>
+</html>

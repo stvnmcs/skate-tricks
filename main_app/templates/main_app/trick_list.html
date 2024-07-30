@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/tricks/trick-index.css' %}" />
+{% endblock %} 
+{% block content %}
+
+<section class="page-header">
+  <h1>All Skater's Tricks</h1>
+  <img src="{% static 'images/Skate Tricks/image 1.jpg' %}" alt="A coutout of a guy doing a trick" />
+  <img src="{% static 'images/Skate Tricks/PngItem_98504.png' %}" alt="A coutout of a guy doing a trick" />
+  <img src="{% static 'images/Skate Tricks/PngItem_98871.png' %}" alt="A coutout of a guy doing a trick" />
+  <img src="{% static 'images/Skate Tricks/PngItem_3439618.png' %}" alt="A coutout of a guy doing a trick" />
+</section>
+
+<section class="card-container">
+  {% for trick in trick_list %}
+    <div class="card" style="border-color: {{ trick.type }}">
+      <div class="card-bg" style="background-color: {{ trick.type }}"></div>
+      <a href="{% url 'trick-detail' trick.id %}">
+        <div class="card-content">
+          <h2>{{ trick.name }}</h2>
+          <p>A {{ trick.type }} </p>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}

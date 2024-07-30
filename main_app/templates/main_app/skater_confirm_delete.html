@@ -1,0 +1,18 @@
+{% extends 'base.html' %}  
+{% load static %} 
+{% block content %}
+
+<div class="page-header">
+  <h1>Delete Skater?</h1>
+  <img src="{% static 'images/Skate Tricks/wee-man.png' %}" alt="Wee Man" />
+</div>
+
+<h2>Are you sure you want to delete {{ skater.name }}?</h2>
+
+<form action="" method="post" class="form">
+  {% csrf_token %}
+  <a href="{% url 'skater-detail' skater.id %}" class="btn secondary">Cancel</a>
+  <button type="submit" class="btn danger">Yes - Delete!</button>
+</form>
+
+{% endblock %}

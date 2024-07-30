@@ -1,0 +1,40 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/skaters/skater-index.css' %}"/>
+{% endblock %} 
+{% block content %}
+
+<section class="page-header">
+  <h1>Skater's List</h1>
+  <img src="{% static 'images/Skate Tricks/bam-margera.png' %}" alt="Bam Margera" />
+  <img src="{% static 'images/Skate Tricks/bigfoot.png' %}" alt="Big Foot" />
+  <img src="{% static 'images/Skate Tricks/Shrek.png' %}" alt="Shrek" />
+  <img src="{% static 'images/Skate Tricks/tony-hawk.png' %}" alt="Tony Hawk" />
+</section>
+
+<section class="card-container">
+  {% for skater in skaters %}
+    <div class="card">
+      <a href="{% url 'skater-detail' skater.id %}">
+      <div class="card-content">
+        <div class="card-img-container">
+          <img
+            src="{% static 'images/Skate Tricks/shrek.png' %}"
+            alt="Shrek"
+          />
+        </div>
+        <h2 class="card-title">{{ skater.name }}</h2>
+        {% if skater.age > 0 %}
+        <p>A {{ skater.age }} year old {{ skater.breed }}</p>
+        {% else %}
+        <p>A {{ skater.breed }} skater.</p>
+        {% endif %}
+        <p><small>{{ skater.description }}</small></p>
+      </div>
+     </a>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}
